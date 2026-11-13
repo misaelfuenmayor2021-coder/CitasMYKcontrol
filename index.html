@@ -575,15 +575,14 @@
 
                 <!-- Bloqueo de Hora -->
                 <div class="bloqueos-admin-box">
-                    <h4 style="margin:0 0 10px 0; color:#f39c12;">2. Bloquear una Hora Específica</h4>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <input type="date" id="hora-fecha" style="margin:0;">
-                        <select id="hora-select" style="margin:0;">
-                            <!-- Generado por JS (8am - 8pm) -->
-                        </select>
-                    </div>
-                    <button onclick="bloquearHoraEspecífica()" style="background:#f39c12; margin-top:10px;">Bloquear esta Hora</button>
-                </div>
+            <h4 style="margin:0 0 10px 0; color:#f39c12;">2. Bloquear Rango de Horas</h4>
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+    <input type="date" id="bloqueo-fecha" style="margin:0;">
+    <input type="time" id="bloqueo-hora-inicio" style="margin:0;">
+    <input type="time" id="bloqueo-hora-fin" style="margin:0;">
+</div>
+<button onclick="bloquearRangoHoras()" style="background:#f39c12; margin-top:10px;">Bloquear Rango</button>
+        
 
                 <h4 style="color:var(--azul-oscuro);">Días y Horas Bloqueadas Actuales:</h4>
                 <div id="lista-dias-bloqueados" style="background:white; padding:10px; border-radius:6px; border:1px solid #eee; min-height:50px;"></div>
