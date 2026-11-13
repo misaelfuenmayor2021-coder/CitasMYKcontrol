@@ -532,6 +532,8 @@
         <div class="container admin-grid">
             <p style="text-align:center; color:#27ae60; font-weight:bold; background:white; padding:10px; border-radius:8px;" id="estado-nube">Conectado a la nube ☁️</p>
 
+          <button onclick="cargarCacheManual()" class="btn-action">Cargar Agenda Local</button>
+  
             <!-- GESTIÓN DE AGENDA -->
             <div class="seccion" style="border-top-color: #27ae60;">
                 <h2 class="seccion-titulo" style="color: #27ae60;"><i class="fa-solid fa-book-medical"></i> Agenda de Citas Registradas</h2>
@@ -725,6 +727,17 @@
             renderizarTodo();
             if(document.getElementById('vista-admin').style.display === 'block'){ cargarDatosAdmin(); }
         });
+        function cargarCacheManual() {
+  const cacheLocal = localStorage.getItem('citas_myk_cache');
+  if (cacheLocal) {
+    listaCitasGlobal = JSON.parse(cacheLocal);
+    renderizarTodo();
+    alert('Agenda cargada desde el respaldo local.');
+  } else {
+    alert('No hay datos de agenda guardados en este dispositivo.');
+  }
+}
+
 
         // Carga Híbrida: LocalStorage + Firebase
 try {
