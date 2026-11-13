@@ -722,13 +722,29 @@
             if(document.getElementById('vista-admin').style.display === 'block'){ cargarDatosAdmin(); }
         });
 
-        // Escuchar Citas
-        citasRef.onSnapshot((snapshot) => {
-            listaCitasGlobal = [];
-            snapshot.forEach((doc) => { listaCitasGlobal.push({ id: doc.id, ...doc.data() }); });
-            listaCitasGlobal.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-            if(document.getElementById('vista-admin').style.display === 'block'){ renderizarAdminCitas(); }
-        });
+        // Carga Híbrida: LocalStorage + Firebase
+try {
+    const cacheLocal = localStorage.getItem('citas_myk_cache');
+    if (cacheLocal) {
+        listaCitasGlobal = JSON.parse(cacheLocal);
+        if(document.getElementById('vista-admin').style.display === 'block') { renderizarAdminCitas(); }
+    }
+} catch (e) { console.warn("Error leyendo caché local"); }
+
+citasRef.get().then((snapshot) => {
+    listaCitasGlobal = [];
+    snapshot.forEach((doc) => {
+        listaCitasGlobal.push({ id: doc.id, ...doc.data() });
+    });
+    listaCitasGlobal.sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
+    try {
+        localStorage.setItem('citas_myk_cache', JSON.stringify(listaCitasGlobal));
+    } catch (e) { console.warn("Error guardando caché local"); }
+    if(document.getElementById('vista-admin').style.display === 'block') { renderizarAdminCitas(); }
+}).catch((error) => {
+    console.error("Error conectando a Firebase, usando modo offline:", error);
+});
+
 
         function guardarEnNube() {
             document.getElementById('estado-nube').innerText = "Guardando... ⏳";
