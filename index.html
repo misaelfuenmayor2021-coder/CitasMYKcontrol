@@ -896,6 +896,15 @@ citasRef.get().then((snapshot) => {
             document.getElementById('admin-binance').value = appData.bancos.binance || "";
             document.getElementById('admin-wa').value = appData.redes.whatsapp || ""; document.getElementById('admin-fb').value = appData.redes.facebook || "";
             document.getElementById('admin-tk').value = appData.redes.tiktok || ""; document.getElementById('admin-yt').value = appData.redes.youtube || "";
+       citasRef.get().then((snapshot) => {
+    listaCitasGlobal = [];
+    snapshot.forEach((doc) => {
+        listaCitasGlobal.push(doc.data());
+    });
+    renderizarAdminCitas();
+}).catch((error) => {
+    console.error("Error cargando citas: ", error);
+});
         }
 
         function renderizarAdminCitas() {
