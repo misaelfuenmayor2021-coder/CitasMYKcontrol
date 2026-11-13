@@ -21,7 +21,12 @@
             --fondo-claro: #f4f7f9;
             --texto-oscuro: #2c3e50;
             --blanco: #ffffff;
-        }
+        }@media (max-width: 768px) {
+  .btn-admin-desktop {
+    display: none;
+  }
+}
+
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -1068,5 +1073,6 @@ citasRef.get().then((snapshot) => {
             }
         }
     </script>
+<button class="btn-admin-desktop" onclick="accederAdmin()">Administración</button>
 </body>
 </html>
