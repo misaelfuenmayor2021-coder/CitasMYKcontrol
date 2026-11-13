@@ -943,20 +943,32 @@ citasRef.get().then((snapshot) => {
             document.getElementById('vac-inicio').value = ''; document.getElementById('vac-fin').value = '';
         }
 
-        function bloquearHoraEspecífica() {
-            const f = document.getElementById('hora-fecha').value;
-            const h = document.getElementById('hora-select').value;
-            if(!f || !h) { alert("Selecciona la fecha y la hora específica."); return; }
+        function bloquearRangoHoras() {
+    const f = document.getElementById('bloqueo-fecha').value;
+    const hInicio = document.getElementById('bloqueo-hora-inicio').value;
+    const hFin = document.getElementById('bloqueo-hora-fin').value;
+    if (!f || !hInicio || !hFin) {
+        alert("Selecciona la fecha, hora de inicio y hora de fin.");
+        return;
+    }
+    if (hInicio >= hFin) {
+        alert("La hora de inicio debe ser menor a la hora de fin.");
+        return;
+    }
+    if (!appData.bloqueos) appData.bloqueos = {};
+    
+    const inicio = parseInt(hInicio.split(':')[0]);
+    const fin = parseInt(hFin.split(':')[0]);
+    
+    for (let h = inicio; h < fin; h++) {
+        const horaStr = (h < 10 ? '0' : '') + h + ":00";
+        const key = f + "_" + horaStr;
+        appData.bloqueos[key] = { motivo: "Bloqueo Manual", tipo: "rango" };
+    }
+    guardarEnNube();
+    alert("Bloqueo de rango aplicado exitosamente.");
+}
 
-            if(!appData.bloqueos) appData.bloqueos = {};
-            if(!appData.bloqueos[f]) appData.bloqueos[f] = [];
-            
-            if(!appData.bloqueos[f].includes(h)) {
-                appData.bloqueos[f].push(h);
-                guardarEnNube();
-            } else { alert("Esa hora ya estaba bloqueada ese día."); }
-            document.getElementById('hora-fecha').value = '';
-        }
 
         function eliminarBloqueo(fecha, hora) {
             if(!appData.bloqueos || !appData.bloqueos[fecha]) return;
